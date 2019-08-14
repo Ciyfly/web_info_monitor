@@ -1,5 +1,7 @@
+import os
+import sys
 from flask import Flask
-from flask.ext.login import LoginManager
+from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask("server")
@@ -12,7 +14,8 @@ login_manager.login_view = 'login'
 
 # db
 db = SQLAlchemy(app)
-
-app.config.from_pyfile("config.py")
+base_path = os.path.dirname(os.path.abspath(__file__))
+config = os.path.join(base_path, "config.py")
+app.config.from_pyfile(config)
 
 from app.views import index
