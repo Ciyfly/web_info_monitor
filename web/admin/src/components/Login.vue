@@ -1,7 +1,7 @@
 <!--
  * @Author: Recar
  * @Date: 2019-08-15 22:06:17
- * @LastEditTime: 2019-08-17 17:21:48
+ * @LastEditTime: 2019-08-17 18:30:40
 -->
 <template>
   <div>
@@ -41,6 +41,9 @@
   </div>
 </template>
 <script>
+import "../api/login";
+import { login } from "../api/login";
+
 export default {
   data() {
     return {
@@ -50,7 +53,11 @@ export default {
   },
   methods: {
     handleLogin() {
-      console.log("logion...");
+      console.log(login);
+      login({
+        username: this.username,
+        password: this.password
+      });
     }
   }
 };
