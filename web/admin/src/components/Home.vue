@@ -1,22 +1,22 @@
 <!--
  * @Author: Recar
  * @Date: 2019-08-15 22:23:53
- * @LastEditTime: 2019-08-15 23:42:26
+ * @LastEditTime: 2019-08-17 13:45:49
 -->
 <template>
-  <div class="hello">
+  <div class="home">
     <h1>{{ msg }}</h1>
-    <router-link to="/login">login</router-link>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  data() {
+    return {
+      msg: "Home"
+    };
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

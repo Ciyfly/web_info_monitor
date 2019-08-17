@@ -1,53 +1,42 @@
 <!--
  * @Author: Recar
  * @Date: 2019-08-15 22:06:17
- * @LastEditTime: 2019-08-15 23:59:34
+ * @LastEditTime: 2019-08-17 17:21:48
 -->
 <template>
   <div>
-    <el-form ref="form" :model="form" label-width="80px">
-      <el-form-item label="活动名称">
-        <el-input v-model="form.name" />
+    <div class="title-container">
+      <h3 class="title">资产监控登录</h3>
+    </div>
+    <el-form name="form">
+      <el-form-item prop="username">
+        <el-input
+          ref="username"
+          v-model="username"
+          placeholder="Username"
+          name="username"
+          type="text"
+          tabindex="1"
+          autocomplete="on"
+        />
       </el-form-item>
-      <el-form-item label="活动区域">
-        <el-select v-model="form.region" placeholder="请选择活动区域">
-          <el-option label="区域一" value="shanghai" />
-          <el-option label="区域二" value="beijing" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="活动时间">
-        <el-col :span="11">
-          <el-date-picker v-model="form.date1" type="date" placeholder="选择日期" style="width: 100%;" />
-        </el-col>
-        <el-col class="line" :span="2">-</el-col>
-        <el-col :span="11">
-          <el-time-picker v-model="form.date2" placeholder="选择时间" style="width: 100%;" />
-        </el-col>
-      </el-form-item>
-      <el-form-item label="即时配送">
-        <el-switch v-model="form.delivery" />
-      </el-form-item>
-      <el-form-item label="活动性质">
-        <el-checkbox-group v-model="form.type">
-          <el-checkbox label="美食/餐厅线上活动" name="type" />
-          <el-checkbox label="地推活动" name="type" />
-          <el-checkbox label="线下主题活动" name="type" />
-          <el-checkbox label="单纯品牌曝光" name="type" />
-        </el-checkbox-group>
-      </el-form-item>
-      <el-form-item label="特殊资源">
-        <el-radio-group v-model="form.resource">
-          <el-radio label="线上品牌商赞助" />
-          <el-radio label="线下场地免费" />
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="活动形式">
-        <el-input v-model="form.desc" type="textarea" />
-      </el-form-item>
+
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">立即创建</el-button>
-        <el-button>取消</el-button>
+        <el-input
+          v-model="password"
+          name="password"
+          type="password"
+          tabindex="2"
+          autocomplete="on"
+          @keyup.enter.native="handleLogin"
+        />
       </el-form-item>
+
+      <el-button
+        type="primary"
+        style="width:100%;margin-bottom:30px;"
+        @click.native.prevent="handleLogin"
+      >登录</el-button>
     </el-form>
   </div>
 </template>
@@ -55,23 +44,23 @@
 export default {
   data() {
     return {
-      form: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: ""
-      }
+      username: "admin",
+      password: "admin"
     };
   },
   methods: {
-    onSubmit() {
-      console.log("submit!");
+    handleLogin() {
+      console.log("logion...");
     }
   }
 };
 </script>
 
+
+<style lang="scss">
+form {
+  margin: 0 auto;
+  width: 300px;
+  height: 100px;
+}
+</style>
