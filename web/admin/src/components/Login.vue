@@ -1,7 +1,7 @@
 <!--
  * @Author: Recar
  * @Date: 2019-08-15 22:06:17
- * @LastEditTime: 2019-08-17 18:30:40
+ * @LastEditTime: 2019-08-22 15:30:32
 -->
 <template>
   <div>
@@ -64,7 +64,7 @@ export default {
 </script>
 
 
-<style lang="scss">
+<style lang="scss" scoped>
 form {
   margin: 0 auto;
   width: 300px;

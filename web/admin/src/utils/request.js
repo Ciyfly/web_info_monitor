@@ -1,101 +1,96 @@
-/*
- * @Author: Recar
- * @Date: 2019-08-17 17:31:08
- * @LastEditTime: 2019-08-17 18:49:57
- */
-import axios from "axios"; //引用axios
-import { Message } from "element-ui";
+import axios from 'axios'
+import { MessageBox, Message } from 'element-ui'
 
-if (process.env.NODE_ENV == "dev") {
-  axios.defaults.baseURL = "http://127.0.0.1:8080";
-} else if (process.env.NODE_ENV == "debug") {
-  axios.defaults.baseURL = "http://127.0.0.1:8080";
-} else if (process.env.NODE_ENV == "production") {
-  axios.defaults.baseURL = "http://127.0.0.1:8080";
-} else {
-  axios.defaults.baseURL = "http://127.0.0.1:8080";
-}
-axios.defaults.timeout = 10000;
+// if (process.env.NODE_ENV == "dev") {
+//   axios.defaults.baseURL = "http://127.0.0.1:8080";
+// } else if (process.env.NODE_ENV == "debug") {
+//   axios.defaults.baseURL = "http://127.0.0.1:8080";
+// } else if (process.env.NODE_ENV == "production") {
+//   axios.defaults.baseURL = "http://127.0.0.1:8080";
+// } else {
+//   axios.defaults.baseURL = "http://127.0.0.1:8080";
+// }
 
-//创建axios实例
-var service = axios.create({
-  headers: {
-    "content-type": "application/json",
-    token: "14a1347f412b319b0fef270489f"
+// create an axios instance
+const service = axios.create({
+  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  // withCredentials: true, // send cookies when cross-domain requests
+  timeout: 5000, // request timeout
+  headers: {  
+    'Access-Control-Allow-Origin': '*',  
+    'Content-Type': 'application/json',  
+  },  
+  withCredentials: true,
+})
+
+// request interceptor
+// service.interceptors.request.use(
+//   config => {
+//     // do something before request is sent
+
+//     if (store.getters.token) {
+//       // let each request carry token
+//       // ['X-Token'] is a custom headers key
+//       // please modify it according to the actual situation
+//       config.headers['X-Token'] = getToken()
+//     }
+//     return config
+//   },
+//   error => {
+//     // do something with request error
+//     console.log(error) // for debug
+//     return Promise.reject(error)
+//   }
+// )
+
+// response interceptor
+service.interceptors.response.use(
+  /**
+   * If you want to get http information such as headers or status
+   * Please return  response => response
+  */
+
+  /**
+   * Determine the request status by custom code
+   * Here is just an example
+   * You can also judge the status by HTTP Status Code
+   */
+  response => {
+    const res = response.data
+
+    // if the custom code is not 20000, it is judged as an error.
+    if (res.code !== 200) {
+      Message({
+        message: res.message || 'Error',
+        type: 'error',
+        duration: 5 * 1000
+      })
+
+      // 50001 用户名或者密码错误
+      if (res.code === 5001) {
+        // to re-login
+        MessageBox.confirm('用户名或者密码错误', 'Confirm logout', {
+          confirmButtonText: 'Re-Login',
+          cancelButtonText: 'Cancel',
+          type: 'warning'
+        }).then(() => {
+            console.log("then")
+          })
+        }
+        return Promise.reject(new Error(res.message || 'Error'))
+    } else {
+      return res
+    }
+  },
+  error => {
+    console.log('err' + error) // for debug
+    Message({
+      message: error.message,
+      type: 'error',
+      duration: 5 * 1000
+    })
+    return Promise.reject(error)
   }
-});
+)
 
-export function get(url, param) {
-  //get请求，其他类型请求复制粘贴，修改method
-
-  return new Promise((cback, reject) => {
-    service({
-      method: "get",
-      url,
-      params: param
-    })
-      .then(res => {
-        //axios返回的是一个promise对象
-        var res_code = res.status.toString();
-        if (res_code.charAt(0) == 2) {
-          cback(res); //cback在promise执行器内部
-        } else {
-          // eslint-disable-next-line no-console
-          console.log(res, "异常1");
-        }
-      })
-      .catch(err => {
-        if (!err.response) {
-          // eslint-disable-next-line no-console
-          console.log("请求错误");
-          //Message是element库的组件，可以去掉
-          Message({
-            showClose: true,
-            message: "请求错误",
-            type: "error"
-          });
-        } else {
-          reject(err.response);
-          // eslint-disable-next-line no-console
-          console.log(err.response, "异常2");
-        }
-      });
-  });
-}
-export function post(url, data) {
-  console.log(url);
-  //post
-  return new Promise((cback, reject) => {
-    service({
-      method: "post",
-      url,
-      data
-    })
-      .then(res => {
-        //axios返回的是一个promise对象
-        var res_code = res.status.toString();
-        if (res_code.charAt(0) == 2) {
-          cback(res); //cback在promise执行器内部
-        } else {
-          // eslint-disable-next-line no-console
-          console.log(res, "异常1");
-        }
-      })
-      .catch(err => {
-        if (!err.response) {
-          // eslint-disable-next-line no-console
-          console.log("请求错误");
-          //Message是element库的组件，可以去掉
-          Message({
-            showClose: true,
-            message: "请求错误",
-            type: "error"
-          });
-        } else {
-          reject(err.response);
-          // eslint-disable-next-line no-console
-          console.log(err.response, "异常2");
-        }
-      });
-  });
-}
+export default service

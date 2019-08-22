@@ -1,24 +1,29 @@
 /*
  * @Author: Recar
  * @Date: 2019-08-17 17:30:52
- * @LastEditTime: 2019-08-17 18:50:33
+ * @LastEditTime: 2019-08-22 19:20:52
  */
-import { post, get } from "../utils/request";
+import request from "../utils/request";
 
 export function login(data) {
-  return post("/user/login", data);
+  return request({
+    url: '/api/user/login',
+    method: 'post',
+    data
+  })
 }
 
 export function getInfo(token) {
-  return get({
-    url: "/user/info",
+  return request({
+    url: '/api/user/info',
+    method: 'get',
     params: { token }
-  });
+  })
 }
 
-export function logout(token) {
-  return get({
-    url: "/user/logout",
-    params: { token }
-  });
+export function logout() {
+  return request({
+    url: '/api/user/logout',
+    method: 'post'
+  })
 }
