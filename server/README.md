@@ -5,3 +5,11 @@
 3.激活虚拟环境 `pipenv shell`  
 4.安装flask  `pipenv install flask`
 5.安装环境设置 `pipenv install python-dotenv`
+
+对数据库进行升级更新  
+
+``` shell
+python manage.py db init
+python manage.py db migrate
+python manage.py db upgrade
+```
