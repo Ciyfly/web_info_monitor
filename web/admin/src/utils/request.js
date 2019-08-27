@@ -1,15 +1,6 @@
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 
-// if (process.env.NODE_ENV == "dev") {
-//   axios.defaults.baseURL = "http://127.0.0.1:8080";
-// } else if (process.env.NODE_ENV == "debug") {
-//   axios.defaults.baseURL = "http://127.0.0.1:8080";
-// } else if (process.env.NODE_ENV == "production") {
-//   axios.defaults.baseURL = "http://127.0.0.1:8080";
-// } else {
-//   axios.defaults.baseURL = "http://127.0.0.1:8080";
-// }
 
 // create an axios instance
 const service = axios.create({
@@ -17,7 +8,7 @@ const service = axios.create({
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000, // request timeout
   headers: {  
-    'Access-Control-Allow-Origin': '*',  
+    'Access-Control-Allow-Origin': '*',
     'Content-Type': 'application/json',  
   },  
   withCredentials: true,
