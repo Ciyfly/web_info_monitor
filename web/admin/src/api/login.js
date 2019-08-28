@@ -1,15 +1,16 @@
 /*
  * @Author: Recar
  * @Date: 2019-08-17 17:30:52
- * @LastEditTime: 2019-08-22 19:45:34
+ * @LastEditTime: 2019-08-28 18:51:42
  */
 import request from "../utils/request";
+import qs from 'qs'
 
 export function login(data) {
   return request({
     url: '/user/login',
     method: 'post',
-    data
+    data: qs.stringify(data)
   })
 }
 

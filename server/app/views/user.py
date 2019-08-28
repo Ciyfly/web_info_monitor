@@ -2,22 +2,29 @@ from app import app
 from flask import request, jsonify
 from app.models.user import User, InvitationCode
 from app import token_util
+import json
 
 @app.route("/user/login", methods=['POST'])
 def login():
-    data = request.get_data()
+    data = json.loads(request.get_data())
     app.logger.debug(data)
-    username = request.form.get("username", "")
-    password = request.form.get("password", "")
+    username = data.get("username", "")
+    password = data.get("password", "")
     app.logger.debug(f"usernmae: {username} password: {password}")
     if User.query.filter(User.username == username).first() and \
         User.check_password_hash(password):
-        return jsonify({
+        response =  jsonify({
             "message": "success",
             "data": {
                 "Token": token_util.generate_auth_token()
             }
         })
+    else:
+        response =  jsonify({
+            "message": "faild",
+        })
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 @app.route("/user/register")
 def register():

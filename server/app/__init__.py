@@ -5,10 +5,11 @@ from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_cors import * 
+from flask_cors import *
 
 app = Flask("server")
-
+# 设置允许跨域
+CORS(app, supports_credentials=True)  # 设置跨域
 
 # 日志系统配置
 handler = logging.FileHandler('server.log', encoding='UTF-8')
@@ -34,15 +35,13 @@ db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
 
-# 设置允许跨域
-# CORS(app, supports_credentials=True)
-CORS(app)
+
 
 from app.views import user
 
-# 跨域支持
-def after_request(resp):
-    resp.headers['Access-Control-Allow-Origin'] = '*'
-    return resp
+# # 跨域支持
+# def after_request(resp):
+#     resp.headers['Access-Control-Allow-Origin'] = '*'
+#     return resp
 
-app.after_request(after_request)
+# app.after_request(after_request)

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "cross-env NODE_ENV=dev vue-cli-service serve --port 8087 ",
+    "serve": "cross-env NODE_ENV=dev vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -14,6 +14,7 @@
     "element-ui": "^2.11.1",
     "http-proxy-middleware": "^0.19.1",
     "node-sass": "^4.12.0",
+    "qs": "^6.8.0",
     "sass-loader": "^7.2.0",
     "vue": "^2.6.10",
     "vue-axios": "^2.1.4",
