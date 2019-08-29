@@ -3,7 +3,7 @@
 '''
 @Author: ysy
 @Date: 2019-08-29 12:13:21
-@LastEditTime: 2019-08-29 18:17:55
+@LastEditTime: 2019-08-29 18:57:34
 '''
 from flask import make_response, jsonify
 
@@ -15,20 +15,20 @@ status_code_em = {
 def success_response(data):
     response = make_response(
         jsonify({
+            "status_code": 2000,
             "message": "success",
             "data": data
         })
     )
-    response.status = str(200)
     return response
 
 def faild_response(status_code):
     response = make_response(
         jsonify({
+            "status_code": status_code,
             "message": status_code_em[status_code],
             "data": {}
         })
     )
-    response.status = str(status_code)
     return response
 
