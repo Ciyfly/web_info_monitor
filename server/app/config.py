@@ -3,7 +3,7 @@
 '''
 @Author: Recar
 @Date: 2019-08-16 11:05:41
-@LastEditTime: 2019-08-29 11:24:03
+@LastEditTime: 2019-08-29 14:18:32
 '''
 import os
 try:
@@ -16,5 +16,3 @@ except Exception as e:
 
 print(f"使用数据库: {SQLALCHEMY_DATABASE_URI}")
 SQLALCHEMY_TRACK_MODIFICATIONS = True
-
-SECRET_KEY = "recar"
