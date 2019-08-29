@@ -1,7 +1,7 @@
 <!--
  * @Author: Recar
  * @Date: 2019-08-15 22:06:17
- * @LastEditTime: 2019-08-29 12:40:04
+ * @LastEditTime: 2019-08-29 16:39:07
 -->
 <template>
   <div>
@@ -13,7 +13,7 @@
         <el-input
           ref="username"
           v-model="username"
-          placeholder="Username"
+          placeholder="用户名"
           name="username"
           type="text"
           tabindex="1"
@@ -24,6 +24,7 @@
       <el-form-item>
         <el-input
           v-model="password"
+          placeholder="密码"
           name="password"
           type="password"
           tabindex="2"
@@ -41,8 +42,8 @@
   </div>
 </template>
 <script>
-import "../api/login";
-import { login } from "../api/login";
+
+import { login } from "../api/user";
 
 export default {
   data() {

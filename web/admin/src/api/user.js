@@ -1,7 +1,7 @@
 /*
  * @Author: Recar
  * @Date: 2019-08-17 17:30:52
- * @LastEditTime: 2019-08-29 12:41:39
+ * @LastEditTime: 2019-08-29 16:26:17
  */
 import request from "../utils/request";
 
@@ -9,7 +9,14 @@ export function login(data) {
   return request({
     url: '/user/login/',
     method: 'post',
-    // data: qs.stringify(data)
+    data: data
+  })
+}
+
+export function register(data) {
+  return request({
+    url: '/user/register/',
+    method: 'post',
     data: data
   })
 }
