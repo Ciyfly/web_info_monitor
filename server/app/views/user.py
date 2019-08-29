@@ -1,16 +1,17 @@
-from app import app
 from flask import request, jsonify
 from app.models.user import User, InvitationCode
-from app import token_util
+from . import user_blueprint
+from app.utils import token_util
+from app.__init__ import logger
 import json
 
-@app.route("/user/login", methods=['POST'])
+@user_blueprint.route("/login/", methods=['POST'])
 def login():
     data = json.loads(request.get_data())
-    app.logger.debug(data)
+    logger.debug(data)
     username = data.get("username", "")
     password = data.get("password", "")
-    app.logger.debug(f"usernmae: {username} password: {password}")
+    logger.debug(f"usernmae: {username} password: {password}")
     if User.query.filter(User.username == username).first() and \
         User.check_password_hash(password):
         response =  jsonify({
@@ -26,7 +27,7 @@ def login():
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
-@app.route("/user/register")
+@user_blueprint.route("/register/")
 def register():
     username = request.form.get("username", "")
     password = request.form.get("password", "")

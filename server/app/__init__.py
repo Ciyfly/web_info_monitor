@@ -3,45 +3,46 @@ import sys
 import logging
 from flask import Flask
 from flask_login import LoginManager
-from flask_sqlalchemy import SQLAlchemy
+from app.models import db
 from flask_migrate import Migrate
 from flask_cors import *
+from app.views import user_blueprint
+# from app.utils import token_util
 
-app = Flask("server")
-# 设置允许跨域
-CORS(app, supports_credentials=True)  # 设置跨域
+# # flask-login
+# login_manager = LoginManager(app)
+# # set login view
+# login_manager.login_view = 'login'
 
-# 日志系统配置
-handler = logging.FileHandler('server.log', encoding='UTF-8')
-logging_format = logging.Formatter(
-            '%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(lineno)s - %(message)s')
-handler.setFormatter(logging_format)
-app.logger.addHandler(handler)
+# cors
+cors = CORS()
 
-# 读取配置文件
-base_path = os.path.dirname(os.path.abspath(__file__))
-config = os.path.join(base_path, "config.py")
-app.config.from_pyfile(config)
-
-from app.utils import token_util
-
-# flask-login
-login_manager = LoginManager(app)
-# set login view
-login_manager.login_view = 'login'
-
-# db
-db = SQLAlchemy(app)
-
-migrate = Migrate(app, db)
+# db迁移
+migrate = Migrate()
 
 
+def create_app():
+    app = Flask("server")
+    # 读取配置文件
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    config = os.path.join(base_path, "config.py")
+    app.config.from_pyfile(config)
+    # 设置允许跨域
+    cors.init_app(app, allow_headers='*')
+    # 日志系统配置
+    handler = logging.FileHandler('server.log', encoding='UTF-8')
+    logging_format = logging.Formatter(
+                '%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(lineno)s - %(message)s')
+    handler.setFormatter(logging_format)
+    app.logger.addHandler(handler)
+    # db
+    db.init_app(app)
+    migrate.init_app(app, db)
+    # 注册蓝图
+    # app.register_blueprint(user_blueprint, url_prefix='/user')
+    app.register_blueprint(user_blueprint, url_prefix='/user')
+    print(app.url_map)
+    return app
 
-from app.views import user
-
-# # 跨域支持
-# def after_request(resp):
-#     resp.headers['Access-Control-Allow-Origin'] = '*'
-#     return resp
-
-# app.after_request(after_request)
+server = create_app()
+logger = server.logger
