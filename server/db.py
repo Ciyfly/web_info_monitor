@@ -1,6 +1,8 @@
 from flask_script import Manager
-from app import app, db
+from app import create_app
+from app.models import db
 from flask_migrate import Migrate,MigrateCommand
+app = create_app()
 manager = Manager(app)
 # init  migrate upgrade
 # 模型 -> 迁移文件 -> 表

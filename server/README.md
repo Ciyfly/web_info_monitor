@@ -9,7 +9,7 @@
 对数据库进行升级更新  
 
 ``` shell
-python manage.py db init
-python manage.py db migrate
-python manage.py db upgrade
+python db.py db init
+python db.py db migrate
+python db.py db upgrade
 ```

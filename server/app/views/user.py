@@ -12,8 +12,10 @@ def login():
     username = data.get("username", "")
     password = data.get("password", "")
     current_app.logger.debug(f"usernmae: {username} password: {password}")
-    if User.query.filter(User.username == username).first() and \
-        User.check_password_hash(password):
+    user = User.query.filter(User.username == username).first()
+    current_app.logger.debug(f"user: {user}")
+
+    if user and  user.check_password(password):
         data: {
             "Token": token_util.generate_auth_token()
         }
@@ -25,10 +27,14 @@ def login():
 
 @user_blueprint.route("/register/")
 def register():
-    username = request.form.get("username", "")
-    password = request.form.get("password", "")
-    email = request.form.get("email", "")
-    invitation_code = request.form.get("invitation_code", "")
+    data = json.loads(request.get_data())
+    username = data.get("username")
+    password = data.get("password")
+    email = data.get("email")
+    invitation_code = data.get("invitation_code")
+    if username is None or password is None or email is None or invitation_code is None:
+        return faild_response(2004)
+
     db_invitation_code = InvitationCode.query.filter(InvitationCode.invitation_code == invitation_code).first()
     if db_invitation_code:
         user = User(
@@ -38,13 +44,7 @@ def register():
             invitation_code = invitation_code,
             is_admin = False
         )
-        return jsonify({
-            "message": "success", 
-            "data":user
-        })
+        return success_response(str(user))
     else:
-        return jsonify({
-            "message": "invitation code not found", 
-            "data":[]
-        })        
+        return faild_response(20005)
 
