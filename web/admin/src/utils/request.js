@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
+import router from '../router/routers'
 
 
 // create an axios instance
@@ -40,13 +41,41 @@ service.interceptors.response.use(
 
   response => {
     const res = response.data
+    res.code = res["status_code"]
+
+    if (res.code == 20003 || res.code == 20004) {
+      Message({
+        message: res.message || 'Error',
+        type: 'error',
+        duration: 3 * 1000
+      })
+    }
+      if (res.code == 2000) {
+        Message({
+          message: res.message || 'success',
+          type: 'success',
+          duration: 2 * 1000,
+          onClose: ()=>{
+        // 登录成功 跳转到首页
+        router.push({path: '/home/'})
+          }
+        })
+
+      }
+        // return Promise.reject(new Error(res.message || 'Error'))
+    
+  },
+  error => {
+    const res = error.response.data
+    res.code = res["status_code"]
+
     if (res.code != 200) {
       Message({
         message: res.message || 'Error',
         type: 'error',
         duration: 5 * 1000
       })
-
+    }
       if (res.code == 200) {
         Message({
           message: res.message || 'success',
@@ -54,18 +83,6 @@ service.interceptors.response.use(
           duration: 5 * 1000
         })
       }
-        // return Promise.reject(new Error(res.message || 'Error'))
-    } else {
-      return res
-    }
-  },
-  error => {
-    const res = error.response.data
-    Message({
-        message: res.message || 'Error',
-        type: 'error',
-        duration: 5 * 1000
-      })
   }
 )
 
