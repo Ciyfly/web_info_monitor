@@ -14,10 +14,11 @@ def login():
     current_app.logger.debug(f"usernmae: {username} password: {password}")
     user = User.query.filter(User.username == username).first()
     current_app.logger.debug(f"user: {user}")
+    user_token = token_util.generate_auth_token(user.id, user.is_admin)
 
     if user and  user.check_password(password):
-        data: {
-            "Token": token_util.generate_auth_token()
+        data = {
+            "Token": user_token
         }
         response = success_response(data)
     else:
