@@ -1,7 +1,7 @@
 <!--
  * @Author: Recar
  * @Date: 2019-08-15 22:06:17
- * @LastEditTime: 2019-08-22 15:30:32
+ * @LastEditTime: 2019-08-29 12:40:04
 -->
 <template>
   <div>
@@ -53,7 +53,6 @@ export default {
   },
   methods: {
     handleLogin() {
-      console.log(login);
       login({
         username: this.username,
         password: this.password

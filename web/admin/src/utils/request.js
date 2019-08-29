@@ -1,12 +1,12 @@
 import axios from 'axios'
-import qs from 'qs'
-import { MessageBox, Message } from 'element-ui'
+import { Message } from 'element-ui'
 
 
 // create an axios instance
 const service = axios.create({
   // baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   baseURL: 'http://127.0.0.1:8080',
+  // baseURL: '/api',
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000, // request timeout
   headers: {  
@@ -37,48 +37,35 @@ const service = axios.create({
 // )
 // response interceptor
 service.interceptors.response.use(
-  config => {
-		if (config.method === 'post') {
-			config.data = qs.stringify(config.data)
-		}
-		return config
-	},
 
   response => {
     const res = response.data
-
-    // if the custom code is not 20000, it is judged as an error.
-    if (res.code !== 200) {
+    if (res.code != 200) {
       Message({
         message: res.message || 'Error',
         type: 'error',
         duration: 5 * 1000
       })
 
-      // 50001 用户名或者密码错误
-      if (res.code === 5001) {
-        // to re-login
-        MessageBox.confirm('用户名或者密码错误', 'Confirm logout', {
-          confirmButtonText: 'Re-Login',
-          cancelButtonText: 'Cancel',
-          type: 'warning'
-        }).then(() => {
-            console.log("then")
-          })
-        }
-        return Promise.reject(new Error(res.message || 'Error'))
+      if (res.code == 200) {
+        Message({
+          message: res.message || 'success',
+          type: 'success',
+          duration: 5 * 1000
+        })
+      }
+        // return Promise.reject(new Error(res.message || 'Error'))
     } else {
       return res
     }
   },
   error => {
-    console.log('err' + error) // for debug
+    const res = error.response.data
     Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
-    return Promise.reject(error)
+        message: res.message || 'Error',
+        type: 'error',
+        duration: 5 * 1000
+      })
   }
 )
 
