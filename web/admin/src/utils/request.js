@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 import router from '../router/routers'
-
+import store from '../store/store'
 
 // create an axios instance
 const service = axios.create({
@@ -56,34 +56,25 @@ service.interceptors.response.use(
           type: 'success',
           duration: 2 * 1000,
           onClose: ()=>{
+        // vuex添加token
+        store.commit('setToken', res["data"]["Token"])
         // 登录成功 跳转到首页
         router.push({path: '/home/'})
           }
         })
 
       }
-        // return Promise.reject(new Error(res.message || 'Error'))
     
-  },
-  error => {
-    const res = error.response.data
-    res.code = res["status_code"]
-
-    if (res.code != 200) {
-      Message({
-        message: res.message || 'Error',
-        type: 'error',
-        duration: 5 * 1000
-      })
-    }
-      if (res.code == 200) {
-        Message({
-          message: res.message || 'success',
-          type: 'success',
-          duration: 5 * 1000
-        })
-      }
   }
 )
 
+// 对请求的拦截器
+service.interceptors.request.use(config => {
+  //判断是否存在token，如果存在将每个页面header都添加token
+  console.log(localStorage.getItem('token'))
+  if(localStorage.getItem('token')){
+  config.headers.common['Authentication-Token']=store.getters.getToken
+  }
+  return config;
+  });
 export default service
