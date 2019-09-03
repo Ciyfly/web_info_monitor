@@ -3,7 +3,7 @@
 '''
 @Author: Recar
 @Date: 2019-08-16 11:05:41
-@LastEditTime: 2019-08-29 14:18:32
+@LastEditTime: 2019-09-03 18:42:11
 '''
 import os
 try:
@@ -16,3 +16,6 @@ except Exception as e:
 
 print(f"使用数据库: {SQLALCHEMY_DATABASE_URI}")
 SQLALCHEMY_TRACK_MODIFICATIONS = True
+
+# 一页多少
+ARTISAN_POSTS_PER_PAGE = 10

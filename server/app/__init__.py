@@ -6,7 +6,7 @@ from flask_login import LoginManager
 from app.models import db
 from flask_migrate import Migrate
 from flask_cors import *
-from app.views import user_blueprint
+from app.views import user_blueprint, domain_blueprint
 
 # db迁移
 migrate = Migrate()
@@ -36,4 +36,5 @@ def create_app():
     # 注册蓝图
     # app.register_blueprint(user_blueprint, url_prefix='/user')
     app.register_blueprint(user_blueprint, url_prefix='/user')
+    app.register_blueprint(domain_blueprint)
     return app

@@ -3,14 +3,15 @@
 '''
 @Author: ysy
 @Date: 2019-08-29 12:13:21
-@LastEditTime: 2019-08-29 18:57:34
+@LastEditTime: 2019-09-03 18:59:57
 '''
 from flask import make_response, jsonify
 
 status_code_em = {
     20003: "用户名或密码不正确",
-    20004: "注册数据违法不能为空",
-    20005: "邀请码不正确"
+    20004: "数据违法不能为空",
+    20005: "邀请码不正确",
+    500: "错误"
 }
 def success_response(data):
     response = make_response(
@@ -32,3 +33,12 @@ def faild_response(status_code):
     )
     return response
 
+def error_response(error):
+    response = make_response(
+        jsonify({
+            "status_code": 500,
+            "message": error,
+            "data": {}
+        })
+    )
+    return response

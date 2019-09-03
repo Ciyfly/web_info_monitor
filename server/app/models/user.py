@@ -1,7 +1,7 @@
 
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from . import db
+from . import db, user_domain
 import datetime
 
 class User(UserMixin, db.Model):
@@ -13,6 +13,10 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(120), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
     invitation_code_id = db.Column(db.Integer, default=0)
+    # 这个地方 一个用户可以关注多个域名
+    domains = db.relationship('Domain',
+                                secondary=user_domain,
+                                back_populates='users')
 
     createtime = db.Column(db.DateTime, default=datetime.datetime.now())
     def __init__(self, username=None, password=None, email=None, is_admin=False, invitation_code=None):

@@ -1,5 +1,5 @@
 from flask import request, jsonify, current_app
-from app.models.user import User, InvitationCode
+from app.models import User, InvitationCode
 from . import user_blueprint
 from app.utils import token_util
 from app.utils.response_util import success_response, faild_response
@@ -45,6 +45,8 @@ def register():
             invitation_code = invitation_code,
             is_admin = False
         )
+        db.session.add(user)
+        db.session.commit()
         return success_response(str(user))
     else:
         return faild_response(20005)
