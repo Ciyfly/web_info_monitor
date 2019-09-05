@@ -3,7 +3,7 @@
 '''
 @Author: recar
 @Date: 2019-09-03 18:05:56
-@LastEditTime: 2019-09-03 19:41:04
+@LastEditTime: 2019-09-05 12:44:48
 '''
 
 from . import db, user_domain
@@ -28,3 +28,6 @@ class Domain(db.Model):
             "domain": self.domain,
             "parent_id": self.parent_id
         })
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
